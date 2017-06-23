@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Ricardo
  */
-
 @Entity
 @Table(name = "asistencia")
 @XmlRootElement
@@ -34,7 +33,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Asistencia.findAll", query = "SELECT a FROM Asistencia a")
     , @NamedQuery(name = "Asistencia.findByIdAsistencia", query = "SELECT a FROM Asistencia a WHERE a.idAsistencia = :idAsistencia")
     , @NamedQuery(name = "Asistencia.findByHoraIngreso", query = "SELECT a FROM Asistencia a WHERE a.horaIngreso = :horaIngreso")
-    , @NamedQuery(name = "Asistencia.findByHoraSalida", query = "SELECT a FROM Asistencia a WHERE a.horaSalida = :horaSalida")})
+    , @NamedQuery(name = "Asistencia.findByHoraSalida", query = "SELECT a FROM Asistencia a WHERE a.horaSalida = :horaSalida")
+    , @NamedQuery(name = "Asistencia.validarIngreso", query = "SELECT a FROM Asistencia a WHERE a.nroDocumento.nroDocumento = :nroDocumento AND FUNCTION('DAY', a.horaIngreso) = FUNCTION('DAY', CURRENT_DATE)")
+    , @NamedQuery(name = "Asistencia.validarSalida", query = "SELECT a FROM Asistencia a WHERE a.nroDocumento.nroDocumento = :nroDocumento AND FUNCTION('DAY', a.horaSalida) = FUNCTION('DAY', CURRENT_DATE)")
+    , @NamedQuery(name = "Asistencia.getIngreso", query = "SELECT FUNCTION('date_format', a.horaIngreso,'%d/%m/%Y a las %H:%i') FROM Asistencia a WHERE a.nroDocumento.nroDocumento = :nroDocumento")
+    , @NamedQuery(name = "Asistencia.getSalida", query = "SELECT FUNCTION('date_format', a.horaSalida,'%d/%m/%Y a las %H:%i') FROM Asistencia a WHERE a.nroDocumento.nroDocumento = :nroDocumento")})
 public class Asistencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -122,5 +125,5 @@ public class Asistencia implements Serializable {
     public String toString() {
         return "pandora.asistencia.entity.Asistencia[ idAsistencia=" + idAsistencia + " ]";
     }
-    
+
 }

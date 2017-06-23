@@ -6,9 +6,7 @@
 package pandora.asistencia.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Tipodato.findAll", query = "SELECT t FROM Tipodato t")
     , @NamedQuery(name = "Tipodato.findByIdTipoDato", query = "SELECT t FROM Tipodato t WHERE t.idTipoDato = :idTipoDato")
-    , @NamedQuery(name = "Tipodato.findByTipoDato", query = "SELECT t FROM Tipodato t WHERE t.tipoDato = :tipoDato")})
+    , @NamedQuery(name = "Tipodato.findByDescripcion", query = "SELECT t FROM Tipodato t WHERE t.descripcion = :descripcion")})
 public class Tipodato implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,12 +37,8 @@ public class Tipodato implements Serializable {
     @Column(name = "idTipoDato")
     private Integer idTipoDato;
     @Basic(optional = false)
-    @Column(name = "tipoDato")
-    private String tipoDato;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDato")
-    private List<Empleado> empleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDato")
-    private List<Parametros> parametrosList;
+    @Column(name = "descripcion")
+    private String descripcion;
 
     public Tipodato() {
     }
@@ -55,9 +47,9 @@ public class Tipodato implements Serializable {
         this.idTipoDato = idTipoDato;
     }
 
-    public Tipodato(Integer idTipoDato, String tipoDato) {
+    public Tipodato(Integer idTipoDato, String descripcion) {
         this.idTipoDato = idTipoDato;
-        this.tipoDato = tipoDato;
+        this.descripcion = descripcion;
     }
 
     public Integer getIdTipoDato() {
@@ -68,30 +60,12 @@ public class Tipodato implements Serializable {
         this.idTipoDato = idTipoDato;
     }
 
-    public String getTipoDato() {
-        return tipoDato;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setTipoDato(String tipoDato) {
-        this.tipoDato = tipoDato;
-    }
-
-    @XmlTransient
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override

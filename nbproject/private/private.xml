@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/entity/Asistencia.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/dao/AsistenciaDao.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/EntityCrud.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/util/Conn.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/EmpleadoMb.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/principal.xhtml</file>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/entity/Empleado.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/AsistenciaService.java</file>
         </group>
     </open-files>
 </project-private>

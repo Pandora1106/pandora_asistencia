@@ -24,13 +24,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Ricardo
  */
 @Entity
-@Table(name = "parametros")
+@Table(name = "parametro")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Parametros.findAll", query = "SELECT p FROM Parametros p")
-    , @NamedQuery(name = "Parametros.findByIdParametro", query = "SELECT p FROM Parametros p WHERE p.idParametro = :idParametro")
-    , @NamedQuery(name = "Parametros.findByDato", query = "SELECT p FROM Parametros p WHERE p.dato = :dato")})
-public class Parametros implements Serializable {
+    @NamedQuery(name = "Parametro.findAll", query = "SELECT p FROM Parametro p")
+    , @NamedQuery(name = "Parametro.findByIdParametro", query = "SELECT p FROM Parametro p WHERE p.idParametro = :idParametro")
+    , @NamedQuery(name = "Parametro.findByDato", query = "SELECT p FROM Parametro p WHERE p.dato = :dato")})
+public class Parametro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,14 +45,14 @@ public class Parametros implements Serializable {
     @ManyToOne(optional = false)
     private Tipodato idTipoDato;
 
-    public Parametros() {
+    public Parametro() {
     }
 
-    public Parametros(Integer idParametro) {
+    public Parametro(Integer idParametro) {
         this.idParametro = idParametro;
     }
 
-    public Parametros(Integer idParametro, String dato) {
+    public Parametro(Integer idParametro, String dato) {
         this.idParametro = idParametro;
         this.dato = dato;
     }
@@ -91,10 +91,10 @@ public class Parametros implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Parametros)) {
+        if (!(object instanceof Parametro)) {
             return false;
         }
-        Parametros other = (Parametros) object;
+        Parametro other = (Parametro) object;
         if ((this.idParametro == null && other.idParametro != null) || (this.idParametro != null && !this.idParametro.equals(other.idParametro))) {
             return false;
         }
@@ -103,7 +103,7 @@ public class Parametros implements Serializable {
 
     @Override
     public String toString() {
-        return "pandora.asistencia.entity.Parametros[ idParametro=" + idParametro + " ]";
+        return "pandora.asistencia.entity.Parametro[ idParametro=" + idParametro + " ]";
     }
     
 }

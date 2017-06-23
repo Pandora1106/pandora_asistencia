@@ -6,20 +6,17 @@
 package pandora.asistencia.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByApeMaterno", query = "SELECT e FROM Empleado e WHERE e.apeMaterno = :apeMaterno")
     , @NamedQuery(name = "Empleado.findByPassword", query = "SELECT e FROM Empleado e WHERE e.password = :password")
     , @NamedQuery(name = "Empleado.findByEstado", query = "SELECT e FROM Empleado e WHERE e.estado = :estado")
+    , @NamedQuery(name = "Empleado.findByTipoDocumento", query = "SELECT e FROM Empleado e WHERE e.tipoDocumento = :tipoDocumento")
     , @NamedQuery(name = "Empleado.findByFecIniContrato", query = "SELECT e FROM Empleado e WHERE e.fecIniContrato = :fecIniContrato")
     , @NamedQuery(name = "Empleado.findByFecFinContrato", query = "SELECT e FROM Empleado e WHERE e.fecFinContrato = :fecFinContrato")
     , @NamedQuery(name = "Empleado.findBySalario", query = "SELECT e FROM Empleado e WHERE e.salario = :salario")
@@ -43,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleado.findByNroTelefonico", query = "SELECT e FROM Empleado e WHERE e.nroTelefonico = :nroTelefonico")
     , @NamedQuery(name = "Empleado.findByCelular", query = "SELECT e FROM Empleado e WHERE e.celular = :celular")
     , @NamedQuery(name = "Empleado.findByDireccion", query = "SELECT e FROM Empleado e WHERE e.direccion = :direccion")
-    , @NamedQuery(name = "Empleado.findByCargo", query = "SELECT e FROM Empleado e WHERE e.cargo = :cargo")})
+    , @NamedQuery(name = "Empleado.findByCargo", query = "SELECT e FROM Empleado e WHERE e.cargo = :cargo")
+    , @NamedQuery(name = "Empleado.validar", query = "SELECT e FROM Empleado e WHERE e.nroDocumento = :nroDocumento AND e.password = :password")})
 public class Empleado implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,12 +66,17 @@ public class Empleado implements Serializable {
     @Column(name = "estado")
     private boolean estado;
     @Basic(optional = false)
+    @Column(name = "tipoDocumento")
+    private int tipoDocumento;
     @Column(name = "fecIniContrato")
-    private String fecIniContrato;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecIniContrato;
     @Column(name = "fecFinContrato")
-    private String fecFinContrato;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecFinContrato;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "salario")
-    private String salario;
+    private Double salario;
     @Column(name = "moneda")
     private String moneda;
     @Column(name = "nroTelefonico")
@@ -83,11 +87,6 @@ public class Empleado implements Serializable {
     private String direccion;
     @Column(name = "cargo")
     private String cargo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nroDocumento")
-    private List<Asistencia> asistenciaList;
-    @JoinColumn(name = "idTipoDato", referencedColumnName = "idTipoDato")
-    @ManyToOne(optional = false)
-    private Tipodato idTipoDato;
 
     public Empleado() {
     }
@@ -96,14 +95,14 @@ public class Empleado implements Serializable {
         this.nroDocumento = nroDocumento;
     }
 
-    public Empleado(Integer nroDocumento, String nombres, String apePaterno, String apeMaterno, String password, boolean estado, String fecIniContrato) {
+    public Empleado(Integer nroDocumento, String nombres, String apePaterno, String apeMaterno, String password, boolean estado, int tipoDocumento) {
         this.nroDocumento = nroDocumento;
         this.nombres = nombres;
         this.apePaterno = apePaterno;
         this.apeMaterno = apeMaterno;
         this.password = password;
         this.estado = estado;
-        this.fecIniContrato = fecIniContrato;
+        this.tipoDocumento = tipoDocumento;
     }
 
     public Integer getNroDocumento() {
@@ -154,27 +153,35 @@ public class Empleado implements Serializable {
         this.estado = estado;
     }
 
-    public String getFecIniContrato() {
+    public int getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public Date getFecIniContrato() {
         return fecIniContrato;
     }
 
-    public void setFecIniContrato(String fecIniContrato) {
+    public void setFecIniContrato(Date fecIniContrato) {
         this.fecIniContrato = fecIniContrato;
     }
 
-    public String getFecFinContrato() {
+    public Date getFecFinContrato() {
         return fecFinContrato;
     }
 
-    public void setFecFinContrato(String fecFinContrato) {
+    public void setFecFinContrato(Date fecFinContrato) {
         this.fecFinContrato = fecFinContrato;
     }
 
-    public String getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(String salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 
@@ -216,23 +223,6 @@ public class Empleado implements Serializable {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
-
-    @XmlTransient
-    public List<Asistencia> getAsistenciaList() {
-        return asistenciaList;
-    }
-
-    public void setAsistenciaList(List<Asistencia> asistenciaList) {
-        this.asistenciaList = asistenciaList;
-    }
-
-    public Tipodato getIdTipoDato() {
-        return idTipoDato;
-    }
-
-    public void setIdTipoDato(Tipodato idTipoDato) {
-        this.idTipoDato = idTipoDato;
     }
 
     @Override

@@ -46,6 +46,7 @@ public class AsistenciaMb implements Serializable {
         AsistenciaDao.updateJDBC(idUsuario);
     }
     
+    //por completar
     public String validarIngreso(int idUsuario) {
         Asistencia asistencia = dao.validarIngreso(idUsuario);
         System.out.println(asistencia);
@@ -56,6 +57,7 @@ public class AsistenciaMb implements Serializable {
         }
     }
     
+    //por completar
     public String validarSalida(int idUsuario) {
         Asistencia asistencia = dao.validarIngreso(idUsuario);
         System.out.println(asistencia);
