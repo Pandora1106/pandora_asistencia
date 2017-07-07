@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Pandora®</title>
+            </f:facet>
+        </h:head>
+        <h:body>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <h1>Bienvenido: <h:outputText value="#{empleadoMb.nombreCompleto}"/> </h1>
+                        <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>     
+                        <p:commandButton style="float: right;" value="Registrar Salida" icon="ui-icon-check" action="horarioEmpleado" />
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="130" closable="true" collapsible="true">
+                    <h1>Pandora®</h1>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    Actualizar Datos del Empleado
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h:form>
+                        <h:panelGrid columns="4" cellpadding="10">
+                            <b>Tipo Documento:</b>
+                            <h:selectOneMenu value="#{empleadoMb.empleado.tipoDocumento}">
+                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItems value="#{empleadoMb.listaTipoDoc}" var="td" itemValue="#{td.idParametro}" itemLabel="#{td.dato}"/>                                
+                            </h:selectOneMenu>
+                            <h:outputLabel for="txtNroDocumento" value="N° Documento:" style="font-weight:bold" />
+                            <p:inputText id="txtNroDocumento" value="#{empleadoMb.empleado.nroDocumento}" />
+                            <h:outputLabel for="txtNombre" value="Nombre(s):" style="font-weight:bold" />
+                            <p:inputText id="txtNombre" value="#{empleadoMb.empleado.nombres}" />
+                            <h:outputLabel for="txtApePaterno" value="Apellido Paterno:" style="font-weight:bold" />
+                            <p:inputText id="txtApePaterno" value="#{empleadoMb.empleado.apePaterno}" />
+                            <h:outputLabel for="txtApeMaterno" value="Apellido Materno:" style="font-weight:bold" />
+                            <p:inputText id="txtApeMaterno" value="#{empleadoMb.empleado.apeMaterno}" />
+                            <h:outputLabel for="txtPassword" value="Password:" style="font-weight:bold" />
+                            <p:inputText id="txtPassword" value="#{empleadoMb.empleado.password}" />
+                            <b>Estado:</b>
+                            <h:selectOneMenu value="#{empleadoMb.empleado.estado}">
+                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>                                
+                            </h:selectOneMenu>
+                            <h:outputLabel for="txtFecIniContrato" value="Fecha Inicio de Contrato:" style="font-weight:bold" />
+                            <p:inputText id="txtFecIniContrato" value="#{empleadoMb.empleado.fecIniContrato}" />
+                            <h:outputLabel for="txtFecFinContrato" value="Fecha Fin de Contrato:" style="font-weight:bold" />
+                            <p:inputText id="txtFecFinContrato" value="#{empleadoMb.empleado.fecFinContrato}" /> 
+                            <h:outputLabel for="txtSalario" value="Salario:" style="font-weight:bold" />
+                            <p:inputText id="txtSalario" value="#{empleadoMb.empleado.salario}" /> 
+                            <h:outputLabel for="txtMoneda" value="Moneda:" style="font-weight:bold" />
+                            <p:inputText id="txtMoneda" value="#{empleadoMb.empleado.moneda}" /> 
+                            <h:outputLabel for="txtNroTelefonico" value="N° Telefonico:" style="font-weight:bold" />
+                            <p:inputText id="txtNroTelefonico" value="#{empleadoMb.empleado.nroTelefonico}" /> 
+                            <h:outputLabel for="txtCelular" value="Celular:" style="font-weight:bold" />
+                            <p:inputText id="txtCelular" value="#{empleadoMb.empleado.celular}" /> 
+                            <h:outputLabel for="txtDireccion" value="Direccion:" style="font-weight:bold" />
+                            <p:inputText id="txtDireccion" value="#{empleadoMb.empleado.direccion}" /> 
+                            <h:outputLabel for="txtCargo" value="Cargo:" style="font-weight:bold" />
+                            <p:inputText id="txtCargo" value="#{empleadoMb.empleado.cargo}" />
+                        </h:panelGrid>
+                        <p:commandButton value="Modificar" action="#{empleadoMb.actualizar()}" icon="ui-icon-check"/>
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
+

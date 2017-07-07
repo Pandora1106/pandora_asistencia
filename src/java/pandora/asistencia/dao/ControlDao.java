@@ -14,13 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-import pandora.asistencia.entity.Empleado;
+import pandora.asistencia.entity.Control;
 import pandora.asistencia.entity.Masterparametro;
 import pandora.asistencia.entity.Parametro;
-import pandora.asistencia.service.EmpleadoService;
+import pandora.asistencia.service.ControlService;
 import pandora.asistencia.service.EntityCrud;
 import pandora.asistencia.util.Conn;
 
@@ -28,56 +26,18 @@ import pandora.asistencia.util.Conn;
  *
  * @author Ricardo
  */
-public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService, Serializable {
 
+public class ControlDao extends EntityCrud<Control> implements ControlService, Serializable{
+    
     EntityManagerFactory emf;
     EntityManager em;
-
-    public EmpleadoDao(Class<Empleado> obj) {
+    
+    public ControlDao(Class<Control> obj) {
         super(obj);
         emf = Persistence.createEntityManagerFactory("pandora_asistenciaPU");
         em = emf.createEntityManager();
     }
-
-    @Override
-    public Empleado validar(int nroDocumento, String password) {
-        Query query = em.createNamedQuery("Empleado.validar");
-        query.setParameter("nroDocumento", nroDocumento);
-        query.setParameter("password", password);
-        try {
-            return (Empleado) query.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<Empleado> findByNroDocumento(int nroDocumento) {
-        Query query = em.createNamedQuery("Empleado.findByNroDocumento");
-        query.setParameter("nroDocumento", nroDocumento);
-        try {
-            return (List<Empleado>) query.getResultList();
-        } catch (NoResultException ex) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<Empleado> findByStatus(int estado) {
-        Query query = em.createNamedQuery("Empleado.findByEstado");
-        query.setParameter("estado", estado);
-        try {
-            return (List<Empleado>) query.getResultList();
-        } catch (NoResultException ex) {
-            return null;
-        }
-    }
     
-    public List<Empleado> findByNameJDBC(String nombre) throws SQLException {
-        
-        return null;
-    }
-
     public List<Parametro> getListaDatoJDBC(String descripcion) throws SQLException {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
@@ -110,16 +70,5 @@ public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService
         }
         return listaParametros;
     }
-
-    @Override
-    public String getNombre(int nroDocumento) {        
-        Query query = em.createNamedQuery("Empleado.getNombreCompleto");
-        query.setParameter("nroDocumento", nroDocumento);        
-        try {
-            return (String) query.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
-        }
-    } 
-
+    
 }

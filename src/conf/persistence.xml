@@ -6,6 +6,10 @@
     <class>pandora.asistencia.entity.Empleado</class>
     <class>pandora.asistencia.entity.Tipodato</class>
     <class>pandora.asistencia.entity.Asistencia</class>
+    <class>pandora.asistencia.entity.Masterparametro</class>
+    <class>pandora.asistencia.entity.Parametro</class>
+    <class>pandora.asistencia.entity.Control</class>
+    <class>pandora.asistencia.entity.Horario</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pandora_asistencia"/>

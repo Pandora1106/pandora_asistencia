@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import pandora.asistencia.dao.ParametroDao;
 import pandora.asistencia.entity.Parametro;
-import pandora.asistencia.entity.Tipodato;
+import pandora.asistencia.entity.Masterparametro;
 
 /**
  *
@@ -20,13 +20,13 @@ import pandora.asistencia.entity.Tipodato;
 public class ParametroMb implements Serializable{
     
     private String dato;
-    private Tipodato tipoDato;
+    private Masterparametro tipoDato;
     private Parametro parametro;
     private ParametroDao dao;
     private List<Parametro> listaParametros;
 
     public ParametroMb() {
-        tipoDato = new Tipodato();
+        tipoDato = new Masterparametro();
         listaParametros = new ArrayList();
         dao = new ParametroDao(Parametro.class);
     }   
@@ -39,11 +39,11 @@ public class ParametroMb implements Serializable{
         this.dato = dato;
     }
 
-    public Tipodato getTipoDato() {
+    public Masterparametro getTipoDato() {
         return tipoDato;
     }
 
-    public void setTipoDato(Tipodato tipoDato) {
+    public void setTipoDato(Masterparametro tipoDato) {
         this.tipoDato = tipoDato;
     }
 

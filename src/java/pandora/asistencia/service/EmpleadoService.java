@@ -16,5 +16,7 @@ public interface EmpleadoService {
     
     public Empleado validar(int nroDocumento, String password);
     public List<Empleado> findByNroDocumento(int nroDocumento);
+    public List<Empleado> findByStatus(int estado);
+    public String getNombre(int nroDocumento);
     
 }

@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Ricardo
  */
+
 @Entity
 @Table(name = "parametro")
 @XmlRootElement
@@ -41,9 +42,9 @@ public class Parametro implements Serializable {
     @Basic(optional = false)
     @Column(name = "dato")
     private String dato;
-    @JoinColumn(name = "idTipoDato", referencedColumnName = "idTipoDato")
+    @JoinColumn(name = "idMasterParametro", referencedColumnName = "idMasterParametro")
     @ManyToOne(optional = false)
-    private Tipodato idTipoDato;
+    private Masterparametro idMasterParametro;
 
     public Parametro() {
     }
@@ -73,12 +74,12 @@ public class Parametro implements Serializable {
         this.dato = dato;
     }
 
-    public Tipodato getIdTipoDato() {
-        return idTipoDato;
+    public Masterparametro getIdMasterParametro() {
+        return idMasterParametro;
     }
 
-    public void setIdTipoDato(Tipodato idTipoDato) {
-        this.idTipoDato = idTipoDato;
+    public void setIdMasterParametro(Masterparametro idMasterParametro) {
+        this.idMasterParametro = idMasterParametro;
     }
 
     @Override

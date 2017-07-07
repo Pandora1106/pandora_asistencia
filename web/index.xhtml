@@ -8,21 +8,18 @@
         <title>Pandora®</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:panelGrid columns="2" cellpadding="5">
-
-                <h:outputLabel for="txtUsuario" value="Usuario:" style="font-weight:bold" />
-                <p:inputText id="txtUsuario" value="#{empleadoMb.nroDocumento}" />
-
-                <h:outputLabel for="txtPassword" value="Password:" style="font-weight:bold" />
-                <p:password id="txtPassword" value="#{empleadoMb.password}" />
-
-
-            </h:panelGrid>
-            <p:commandButton value="Ingresar" action="#{empleadoMb.validar}"  icon="ui-icon-check" />
-        </h:form>
-        <br />
-
-        <h:outputLink value="http://pandora-technologies.com.pe">¡Pandora Website!</h:outputLink>
+        <div align="center" draggable="false">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="txtUsuario" value="Usuario:" style="font-weight:bold" />
+                    <p:inputText id="txtUsuario" value="#{empleadoMb.nroDocumento}" />
+                    <h:outputLabel for="txtPassword" value="Password:" style="font-weight:bold" />
+                    <p:password id="txtPassword" value="#{empleadoMb.password}" />
+                </h:panelGrid>
+                <p:commandButton value="Ingresar" action="#{empleadoMb.validar}"  icon="ui-icon-check" />
+            </h:form>
+            <br />
+            <h:outputLink value="http://pandora-technologies.com.pe">¡Pandora Website!</h:outputLink>
+        </div>
     </h:body>
 </html>

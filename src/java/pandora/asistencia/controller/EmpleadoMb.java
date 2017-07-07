@@ -6,21 +6,27 @@
 package pandora.asistencia.controller;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javafx.event.ActionEvent;
+//import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import pandora.asistencia.dao.EmpleadoDao;
 import pandora.asistencia.entity.Empleado;
+import pandora.asistencia.entity.Parametro;
 
 /**
  *
  * @author Ricardo
  */
+
 @ManagedBean
 @RequestScoped
 public class EmpleadoMb implements Serializable {
@@ -43,9 +49,15 @@ public class EmpleadoMb implements Serializable {
     private Empleado empleado;
     private EmpleadoDao dao;
     private List<Empleado> listaEmpleados;
-    
+
     private boolean visible = false;
     private int busqueda;
+    private String nombreCompleto;
+    private int radioValue;
+    private List<Parametro> listaTipoDoc;
+    private List<Parametro> listaEstado;
+    private static final String DATO1 = "tipo documento";
+    private static final String DATO2 = "estado";
 
     public EmpleadoMb() {
         empleado = new Empleado();
@@ -68,7 +80,8 @@ public class EmpleadoMb implements Serializable {
     public String validar() {
         Empleado emp = dao.validar(nroDocumento, password);
         if (emp != null) {
-            nombres = emp.getNombres();
+            nombreCompleto = dao.getNombre(nroDocumento);
+//            nroDocumento = emp.getNroDocumento();
             return "principal";
         } else {
             return "index";
@@ -79,12 +92,23 @@ public class EmpleadoMb implements Serializable {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         req.getSession(true).invalidate();
         return "index";
-    }    
+    }
 
-    public void getList(ActionEvent event) {
-        setVisible(true);
-        listaEmpleados = new ArrayList<>();
-        listaEmpleados = dao.findAll();
+    public void radioValueChanged() throws SQLException {
+        switch (radioValue) {
+            case 0:
+                listaEmpleados = new ArrayList();
+                listaEmpleados = dao.findByNroDocumento(radioValue);
+            case 1://nombres
+                listaEmpleados = new ArrayList();
+                listaEmpleados = dao.findByNameJDBC(DATO1);
+            case 2://estado
+                listaEmpleados = new ArrayList();
+                listaEmpleados = dao.findByStatus(radioValue);
+            default:
+                listaEmpleados = new ArrayList();
+                listaEmpleados = dao.findAll();
+        }
     }
 
     public int getNroDocumento() {
@@ -209,11 +233,7 @@ public class EmpleadoMb implements Serializable {
 
     public List<Empleado> getListaEmpleados() {
         setVisible(true);
-        switch(busqueda){
-            case 1:
-                listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByNroDocumento(nroDocumento);
-        }        
+        listaEmpleados = new ArrayList();
         listaEmpleados = dao.findAll();
         return listaEmpleados;
     }
@@ -244,6 +264,60 @@ public class EmpleadoMb implements Serializable {
 
     public void setBusqueda(int busqueda) {
         this.busqueda = busqueda;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public List<Parametro> getListaTipoDoc() throws SQLException {
+        listaTipoDoc = new ArrayList();
+        listaTipoDoc = dao.getListaDatoJDBC(DATO1);
+        return listaTipoDoc;
+    }
+
+    public void setListaTipoDoc(List<Parametro> listaTipoDoc) {
+        this.listaTipoDoc = listaTipoDoc;
+    }
+
+    public List<Parametro> getListaEstado() throws SQLException {
+        listaEstado = new ArrayList();
+        listaEstado = dao.getListaDatoJDBC(DATO2);
+        return listaEstado;
+    }
+
+    public void setListaEstado(List<Parametro> listaEstado) {
+        this.listaEstado = listaEstado;
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage("Empleado Selecionado", ((Empleado) event.getObject()).getNombres());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+//        ConfigurableNavigationHandler configurableNavigationHandler =
+//    			(ConfigurableNavigationHandler)FacesContext.
+//    			  getCurrentInstance().getApplication().getNavigationHandler();    	
+//    	  configurableNavigationHandler.performNavigation("datosEmpleado?faces-redirect=true");
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Empleado Deselecionado", ((Empleado) event.getObject()).getNombres());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public int getRadioValue() {
+        return radioValue;
+    }
+
+    public void setRadioValue(int radioValue) {
+        this.radioValue = radioValue;
+    }
+
+    public String goToEmployee(int nroDocumento) {
+        return "datosEmpleado?faces-redirect=true&pageId=" + nroDocumento;
     }
 
 }

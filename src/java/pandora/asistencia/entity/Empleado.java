@@ -7,16 +7,20 @@ package pandora.asistencia.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,8 +46,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Empleado.findByCelular", query = "SELECT e FROM Empleado e WHERE e.celular = :celular")
     , @NamedQuery(name = "Empleado.findByDireccion", query = "SELECT e FROM Empleado e WHERE e.direccion = :direccion")
     , @NamedQuery(name = "Empleado.findByCargo", query = "SELECT e FROM Empleado e WHERE e.cargo = :cargo")
-    , @NamedQuery(name = "Empleado.validar", query = "SELECT e FROM Empleado e WHERE e.nroDocumento = :nroDocumento AND e.password = :password")})
+    , @NamedQuery(name = "Empleado.validar", query = "SELECT e FROM Empleado e WHERE e.nroDocumento = :nroDocumento AND e.password = :password")
+    , @NamedQuery(name = "Empleado.getNombreCompleto", query = "SELECT CONCAT(e.nombres, ' ', e.apePaterno, ' ', e.apeMaterno) AS nombreCompleto FROM Empleado e WHERE e.nroDocumento = :nroDocumento")})
 public class Empleado implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nroDocumento")
+    private List<Horario> horarioList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,7 +72,7 @@ public class Empleado implements Serializable {
     private String password;
     @Basic(optional = false)
     @Column(name = "estado")
-    private boolean estado;
+    private int estado;
     @Basic(optional = false)
     @Column(name = "tipoDocumento")
     private int tipoDocumento;
@@ -95,7 +103,7 @@ public class Empleado implements Serializable {
         this.nroDocumento = nroDocumento;
     }
 
-    public Empleado(Integer nroDocumento, String nombres, String apePaterno, String apeMaterno, String password, boolean estado, int tipoDocumento) {
+    public Empleado(Integer nroDocumento, String nombres, String apePaterno, String apeMaterno, String password, int estado, int tipoDocumento) {
         this.nroDocumento = nroDocumento;
         this.nombres = nombres;
         this.apePaterno = apePaterno;
@@ -145,11 +153,11 @@ public class Empleado implements Serializable {
         this.password = password;
     }
 
-    public boolean getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
@@ -249,5 +257,14 @@ public class Empleado implements Serializable {
     public String toString() {
         return "pandora.asistencia.entity.Empleado[ nroDocumento=" + nroDocumento + " ]";
     }
-    
+
+    @XmlTransient
+    public List<Horario> getHorarioList() {
+        return horarioList;
+    }
+
+    public void setHorarioList(List<Horario> horarioList) {
+        this.horarioList = horarioList;
+    }
+
 }

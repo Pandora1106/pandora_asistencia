@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Pandora®</title>
+            </f:facet>
+        </h:head>
+        <h:body>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2>
+                        <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>
+                        <p:commandButton style="float: right;" value="Main" icon="ui-icon-check" action="principal" />
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="130" closable="true" collapsible="true">
+                    <h1>Pandora®</h1>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    Marcar Fecha y Hora de Ingreso / Actividades
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel for="txtNroDocumento" value="N° Documento" style="font-weight:bold"/>
+                            <p:inputText id="txtNroDocumento" value="#{horarioMb.nroDocumento}" />
+                        </h:panelGrid>
+                        <div align="center" draggable="false">
+                            <p:commandButton value="Registrar Ingreso" action="#{horarioMb.grabar()}" icon="ui-icon-check"/>
+                            <p:commandButton value="Registrar Salida" action="#{horarioMb.actualizar()}" icon="ui-icon-check"/>
+                            <br/>
+                        </div>
+                        <h3>Control de Actividades:</h3>
+                        <br/>
+
+                        <p:panel id="actividad" header="Actividad" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelAc" style="margin-bottom:20px" collapsed="true">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="txtEmpresaAc" value="Empresa: " style="font-weight:bold"/>
+                                <p:inputText id="txtEmpresaAc" value="#{controlMb.control.empresa}" />
+                                <h:outputLabel for="txtProyectoAc" value="Proyecto: " style="font-weight:bold"/>
+                                <p:inputText id="txtProyectoAc" value="#{controlMb.control.proyecto}" />
+                                <h:outputLabel for="txtHorasAc" value="Horas: " style="font-weight:bold"/>
+                                <p:inputText id="txtHorasAc" value="#{controlMb.control.horas}" />
+                                <b>Actividad: </b>
+                                <h:selectOneMenu value="#{controlMb.control.control}">
+                                    <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                    <f:selectItems value="#{controlMb.listaActividad}" var="con" itemValue="#{con.idParametro}" itemLabel="#{con.dato}"/>
+                                </h:selectOneMenu>
+                                <b>Detalle: </b>
+                                <p:inputTextarea rows="5" cols="31" counter="displayAc" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}"/>
+                                <br/>
+                                <h:outputText id="displayAc" />
+                            </h:panelGrid>
+                            <div align="center" draggable="false">
+                                <p:commandButton value="Registrar Actividad" action="#{controlMb.grabar()}" icon="ui-icon-check"/>
+                            </div>
+                        </p:panel>
+
+                        <p:panel id="problema" header="Problema" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelPr" style="margin-bottom:20px" collapsed="true">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="txtEmpresaPr" value="Empresa: " style="font-weight:bold"/>
+                                <p:inputText id="txtEmpresaPr" value="#{controlMb.control.empresa}" />
+                                <h:outputLabel for="txtProyectoPr" value="Proyecto: " style="font-weight:bold"/>
+                                <p:inputText id="txtProyectoPr" value="#{controlMb.control.proyecto}" />
+                                <h:outputLabel for="txtHorasPr" value="Horas: " style="font-weight:bold"/>
+                                <p:inputText id="txtHorasPr" value="#{controlMb.control.horas}" />
+                                <b>Problema: </b>
+                                <h:selectOneMenu value="#{controlMb.control.control}">
+                                    <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                    <f:selectItems value="#{controlMb.listaProblema}" var="con" itemValue="#{con.idParametro}" itemLabel="#{con.dato}"/>
+                                </h:selectOneMenu>
+                                <b>Detalle: </b>
+                                <p:inputTextarea rows="5" cols="31" counter="displayPr" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}"/>
+                                <br/>
+                                <h:outputText id="displayPr" />
+                            </h:panelGrid>
+                            <div align="center" draggable="false">
+                                <p:commandButton value="Registrar Actividad" action="#{controlMb.grabar()}" icon="ui-icon-check" binding=""/>
+                            </div>
+                        </p:panel>
+
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
