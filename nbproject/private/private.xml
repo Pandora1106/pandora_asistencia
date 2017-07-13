@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/EmpleadoMb.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/dao/HorarioDao.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/principal.xhtml</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/ViewEmpleado.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/EntityCrud.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/entity/Horario.java</file>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/dao/EmpleadoDao.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/HorarioMb.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/horarioEmpleado.xhtml</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/registrarEmpleado.xhtml</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/datosEmpleado.xhtml</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/ControlMb.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/EmpleadoService.java</file>
         </group>
     </open-files>
 </project-private>

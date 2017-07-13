@@ -35,21 +35,20 @@
                     <h:form id="form">
                         <p:outputPanel id="customPanel" style="margin-bottom:10px">
                             <p:selectOneRadio value="#{empleadoMb.radioValue}" id="customRadio" layout="custom"  required="true" >
-                                <f:selectItem itemLabel="Número de Documento: " itemValue="0" />
-                                <f:selectItem itemLabel="Nombre(s)" itemValue="1" />
-                                <f:selectItem itemLabel="Estado" itemValue="2" />
-                                <p:ajax listener="#{empleadoMb.radioValueChanged()}" update="selectMenu" />
+                                <f:selectItem itemLabel="Número de Documento: " itemValue="0"/>
+                                <f:selectItem itemLabel="Nombre(s)" itemValue="1"/>
+                                <f:selectItem itemLabel="Estado" itemValue="2"/>
                             </p:selectOneRadio>
                             <h:panelGrid columns="3" cellpadding="5">
-                                <p:radioButton id ="txtNroDocumento" for="customRadio" itemIndex="0" />
-                                <h:outputLabel for="txtNroDocumento" value="Número de Documento: " />
-                                <p:inputText id = "txtBuscarByNro" value = "#{empleadoMb.buscarByNro}"/>
-                                <p:radioButton id="txtNombre" for="customRadio" itemIndex="1" />
+                                <p:radioButton for="customRadio" itemIndex="0" />
+                                <h:outputLabel for="txtBuscarByNro" value="Número de Documento: " />
+                                <p:inputText id= "txtBuscarByNro" value="#{empleadoMb.buscarByNro}"/>
+                                <p:radioButton for="customRadio" itemIndex="1" />
                                 <h:outputLabel for="txtNombre" value="Nombre(s): " />
-                                <p:inputText />
+                                <p:inputText id="txtNombre" value="#{empleadoMb.buscarByNombre}"/>
                                 <p:radioButton id="txtEstado" for="customRadio" itemIndex="2" />
                                 <h:outputLabel for="txtEstado" value="Estado: " />
-                                <h:selectOneMenu id="selectMenu" >
+                                <h:selectOneMenu id="selectMenu" value="#{empleadoMb.cbValue}" >
                                     <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                     <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>
                                 </h:selectOneMenu>

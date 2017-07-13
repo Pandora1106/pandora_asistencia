@@ -74,8 +74,38 @@ public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService
     }
     
     public List<Empleado> findByNameJDBC(String nombre) throws SQLException {
-        
-        return null;
+        Connection dbConnection = null;
+        PreparedStatement preparedStatement = null;
+        List<Empleado> listaEmpleados = null;
+        String selectTableSQL = "SELECT * FROM empleado WHERE nombres LIKE '?%'";
+        try {
+            listaEmpleados = new ArrayList();
+            dbConnection = Conn.getConnection();
+            preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+            preparedStatement.setString(1, nombre);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setNroDocumento(rs.getInt("nroDocumento"));
+                empleado.setNombres(rs.getString("nombres"));
+                empleado.setApePaterno(rs.getString("apePaterno"));
+                empleado.setApeMaterno(rs.getString("apeMaterno"));
+                empleado.setPassword(rs.getString("password"));
+                empleado.setEstado(rs.getInt("estado"));
+                empleado.setTipoDocumento(rs.getInt("tipoDocumento"));
+                listaEmpleados.add(empleado);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        }
+        return listaEmpleados;
     }
 
     public List<Parametro> getListaDatoJDBC(String descripcion) throws SQLException {

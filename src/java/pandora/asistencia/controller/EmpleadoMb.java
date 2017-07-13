@@ -8,7 +8,6 @@ package pandora.asistencia.controller;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 //import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
@@ -33,32 +32,19 @@ import pandora.asistencia.util.Constantes;
 public class EmpleadoMb implements Serializable {
 
     private Integer nroDocumento;
-    private String nombres;
-    private String apePaterno;
-    private String apeMaterno;
     private String password;
-    private boolean estado;
-    private int tipoDocumento;
-    private Date fecIniContrato;
-    private Date fecFinContrato;
-    private double salario;
-    private String moneda;
-    private String nroTelefonico;
-    private String celular;
-    private String direccion;
-    private String cargo;
-    private Empleado empleado;
-    private EmpleadoDao dao;
-    private List<Empleado> listaEmpleados;
-
-    private boolean visible = false;
-    private int busqueda;
+    private String buscarByNombre;
+    private boolean visible = false;//useless by now
     private String nombreCompleto;
     private int radioValue;
+    private int cbValue;
     private List<Parametro> listaTipoDoc;
     private List<Parametro> listaEstado;
     private Empleado tempEmp;
     private Integer buscarByNro;
+    private Empleado empleado;
+    private EmpleadoDao dao;
+    private List<Empleado> listaEmpleados;
 
     public EmpleadoMb() {
         empleado = new Empleado();
@@ -82,7 +68,7 @@ public class EmpleadoMb implements Serializable {
     public String validar() {
         Empleado emp = dao.validar(nroDocumento, password);
         if (emp != null) {
-            nombreCompleto = dao.getNombre(nroDocumento);
+            nombreCompleto = emp.getNombres() + " " + emp.getApePaterno() + " " + emp.getApeMaterno();
             nroDocumento = emp.getNroDocumento();
             return "principal";
         } else {
@@ -96,8 +82,7 @@ public class EmpleadoMb implements Serializable {
         return "index";
     }
 
-    public void radioValueChanged() throws SQLException {
-        setVisible(true);
+    public void radioValueChanged() throws SQLException {        
         switch (radioValue) {
             case 0://buscar por número de documento (dni/pasaporte)
                 listaEmpleados = new ArrayList();
@@ -105,10 +90,11 @@ public class EmpleadoMb implements Serializable {
                 listaEmpleados.add(tempEmp);
             case 1://buscar por nombres
                 listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByNameJDBC(Constantes.TIPODOC);
+                listaEmpleados = dao.findByNameJDBC(buscarByNombre);
             case 2://buscar por estado
                 listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByStatus(radioValue);
+                listaEmpleados = dao.findByStatus(cbValue);
+                //esto no va
             default:
                 listaEmpleados = new ArrayList();
                 listaEmpleados = dao.findAll();
@@ -121,31 +107,7 @@ public class EmpleadoMb implements Serializable {
 
     public void setNroDocumento(Integer nroDocumento) {
         this.nroDocumento = nroDocumento;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getApePaterno() {
-        return apePaterno;
-    }
-
-    public void setApePaterno(String apePaterno) {
-        this.apePaterno = apePaterno;
-    }
-
-    public String getApeMaterno() {
-        return apeMaterno;
-    }
-
-    public void setApeMaterno(String apeMaterno) {
-        this.apeMaterno = apeMaterno;
-    }
+    }   
 
     public String getPassword() {
         return password;
@@ -153,78 +115,6 @@ public class EmpleadoMb implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isEstado() {
-        return estado;
-    }
-
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
-
-    public Date getFecIniContrato() {
-        return fecIniContrato;
-    }
-
-    public void setFecIniContrato(Date fecIniContrato) {
-        this.fecIniContrato = fecIniContrato;
-    }
-
-    public Date getFecFinContrato() {
-        return fecFinContrato;
-    }
-
-    public void setFecFinContrato(Date fecFinContrato) {
-        this.fecFinContrato = fecFinContrato;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
-
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
-
-    public String getMoneda() {
-        return moneda;
-    }
-
-    public void setMoneda(String moneda) {
-        this.moneda = moneda;
-    }
-
-    public String getNroTelefonico() {
-        return nroTelefonico;
-    }
-
-    public void setNroTelefonico(String nroTelefonico) {
-        this.nroTelefonico = nroTelefonico;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
     }
 
     public Empleado getEmpleado() {
@@ -235,22 +125,14 @@ public class EmpleadoMb implements Serializable {
         this.empleado = empleado;
     }
 
-    public List<Empleado> getListaEmpleados() {        
-        listaEmpleados = new ArrayList();
-        listaEmpleados = dao.findAll();
+    public List<Empleado> getListaEmpleados() throws SQLException {     
+        //cambiar
+        setVisible(true);
         return listaEmpleados;
     }
 
     public void setListaEmpleados(List<Empleado> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
-    }
-
-    public int getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(int tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
     }
 
     public boolean isVisible() {
@@ -259,14 +141,6 @@ public class EmpleadoMb implements Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public int getBusqueda() {
-        return busqueda;
-    }
-
-    public void setBusqueda(int busqueda) {
-        this.busqueda = busqueda;
     }
 
     public String getNombreCompleto() {
@@ -329,6 +203,22 @@ public class EmpleadoMb implements Serializable {
     
     public void clearValues(){
         setBuscarByNro(null);
+    }
+
+    public String getBuscarByNombre() {
+        return buscarByNombre;
+    }
+
+    public void setBuscarByNombre(String buscarByNombre) {
+        this.buscarByNombre = buscarByNombre;
+    }
+
+    public int getCbValue() {
+        return cbValue;
+    }
+
+    public void setCbValue(int cbValue) {
+        this.cbValue = cbValue;
     }
     
 }
