@@ -8,6 +8,7 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <f:view contentType="text/html">
         <h:head>
@@ -20,9 +21,9 @@ and open the template in the editor.
             <p:layout fullPage="true">
                 <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
                     <h:form>
-                        <h1>Bienvenido: <h:outputText value="#{empleadoMb.nombreCompleto}"/> </h1>
+                        <h2>Bienvenido: <h:outputText value="#{empleadoMb.nombreCompleto}"/> </h2> <p:clock pattern="dd/MM/yyyy HH:mm:ss"/>
                         <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>     
-                        <p:commandButton style="float: right;" value="Registrar Salida" icon="ui-icon-check" action="horarioEmpleado" />
+                        <p:commandButton style="float: right;" value="Main" icon="ui-icon-check" action="principal" />
                     </h:form>
                 </p:layoutUnit>
                 <p:layoutUnit position="south" size="130" closable="true" collapsible="true">
@@ -35,14 +36,10 @@ and open the template in the editor.
                     <br/>
                     <h:form rendered="#{not empty viewEmpleado.empleado}">
                         <h:panelGrid columns="4" cellpadding="10">
-                            <f:metadata>
-                                <f:viewParam name="id" value="#{viewEmpleado.empleado}" 
-                                             converter="#{empleadoConverter}" converterMessage="Unknown employee, please use a link from within the system."
-                                             required="true" requiredMessage="Bad request, please use a link from within the system." />
-                            </f:metadata>
+                            
                             <b>Tipo Documento:</b>
                             <h:selectOneMenu value="#{empleadoMb.empleado.tipoDocumento}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                 <f:selectItems value="#{empleadoMb.listaTipoDoc}" var="td" itemValue="#{td.idParametro}" itemLabel="#{td.dato}"/>                                
                             </h:selectOneMenu>
                             <h:outputLabel for="txtNroDocumento" value="N° Documento:" style="font-weight:bold" />
@@ -57,7 +54,7 @@ and open the template in the editor.
                             <p:inputText id="txtPassword" value="#{empleadoMb.empleado.password}" />
                             <b>Estado:</b>
                             <h:selectOneMenu value="#{empleadoMb.empleado.estado}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                 <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>                                
                             </h:selectOneMenu>
                             <h:outputLabel for="txtFecIniContrato" value="Fecha Inicio de Contrato:" style="font-weight:bold" />

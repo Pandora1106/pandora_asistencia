@@ -10,44 +10,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import pandora.asistencia.dao.ControlDao;
 import pandora.asistencia.entity.Control;
 import pandora.asistencia.entity.Parametro;
+import pandora.asistencia.util.Constantes;
 
 /**
  *
  * @author Ricardo
  */
 
-
 @ManagedBean
 @RequestScoped
-public class ControlMb implements Serializable{
-    
+public class ControlMb implements Serializable {
+
     private int idHorario;
     private String empresa;
     private String proyecto;
-    private int horas;
-    private int actividad;
+    private Integer horas;
+    private Integer actividad;
     private String detalle;
     private Control control;
-    private ControlDao dao;    
+    private ControlDao dao;
     private List<Parametro> listaActividad;
     private List<Parametro> listaProblema;
-    private List<Control> listaControles;
-    
-    private static final String DATO3 = "actividad";
-    private static final String DATO4 = "problema";
+    private List<Control> listaControles;    
 
     public ControlMb() {
         control = new Control();
         listaControles = new ArrayList();
         dao = new ControlDao(Control.class);
     }
-    
-    public void grabar() {
-        dao.create(control);
+
+    public void grabar() throws SQLException {
+        dao.persistControl(control, nroDocumentoC);
+        clear();
     }
 
     public void eliminar() {
@@ -80,7 +79,7 @@ public class ControlMb implements Serializable{
 
     public void setListaControles(List<Control> listaControles) {
         this.listaControles = listaControles;
-    }        
+    }
 
     public String getEmpresa() {
         return empresa;
@@ -98,19 +97,19 @@ public class ControlMb implements Serializable{
         this.proyecto = proyecto;
     }
 
-    public int getHoras() {
+    public Integer getHoras() {
         return horas;
     }
 
-    public void setHoras(int horas) {
+    public void setHoras(Integer horas) {
         this.horas = horas;
     }
 
-    public int getActividad() {
+    public Integer getActividad() {
         return actividad;
     }
 
-    public void setActividad(int actividad) {
+    public void setActividad(Integer actividad) {
         this.actividad = actividad;
     }
 
@@ -124,7 +123,7 @@ public class ControlMb implements Serializable{
 
     public List<Parametro> getListaActividad() throws SQLException {
         listaActividad = new ArrayList();
-        listaActividad = dao.getListaDatoJDBC(DATO3);
+        listaActividad = dao.getListaDatoJDBC(Constantes.ACTIVIDAD);
         return listaActividad;
     }
 
@@ -134,12 +133,31 @@ public class ControlMb implements Serializable{
 
     public List<Parametro> getListaProblema() throws SQLException {
         listaProblema = new ArrayList();
-        listaProblema = dao.getListaDatoJDBC(DATO4);
+        listaProblema = dao.getListaDatoJDBC(Constantes.PROBLEMA);
         return listaProblema;
     }
 
     public void setListaProblema(List<Parametro> listaProblema) {
         this.listaProblema = listaProblema;
+    }       
+
+    @ManagedProperty(value="#{empleadoMb.nroDocumento}")
+    private Integer nroDocumentoC;
+    
+    public void setNroDocumentoC(Integer nroDocumentoC) {
+        this.nroDocumentoC = nroDocumentoC;
+    }    
+
+    public Integer getNroDocumentoC() {
+        return nroDocumentoC;
+    }
+    
+    public void clear(){
+        setEmpresa(null);
+        setProyecto(null);
+        setHoras(null);
+        setActividad(0);
+        setDetalle(null);
     }
     
 }

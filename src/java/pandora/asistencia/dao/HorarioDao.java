@@ -7,6 +7,7 @@ package pandora.asistencia.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.EntityManager;
@@ -58,6 +59,7 @@ public class HorarioDao extends EntityCrud<Horario> implements HorarioService {
         }
     }
 
+    //non-use
     @Override
     public void updateByMerge(int nroDocumento) {
         Query query = em.createNativeQuery("SELECT * FROM Horario a WHERE DAY(a.ingreso) = DAY(CURDATE()) AND a.nroDocumento = ?");
@@ -104,13 +106,14 @@ public class HorarioDao extends EntityCrud<Horario> implements HorarioService {
     public static void updateJDBC(int nroDocumento) throws SQLException {        
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;        
-        String updateTableSQL = "UPDATE Horario SET salida = Now() WHERE nroDocumento = ? AND DAY(ingreso) = DAY(CURDATE())";
+        /*1st query
+        String updateTableSQL = "UPDATE Horario SET salida = Now() WHERE nroDocumento = ? AND DAY(ingreso) = DAY(CURDATE())";*/
+        String updateTableSQL = "UPDATE horario SET salida = Now() WHERE nroDocumento = ? ORDER BY ingreso DESC LIMIT 1";
         try {
             dbConnection = Conn.getConnection();            
             preparedStatement = dbConnection.prepareStatement(updateTableSQL);
             preparedStatement.setInt(1, nroDocumento);
             preparedStatement.executeUpdate();
-            System.out.println("updateo");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -121,5 +124,32 @@ public class HorarioDao extends EntityCrud<Horario> implements HorarioService {
                 dbConnection.close();
             }
         }
+    }
+    
+    public Horario validateJDBC(int nroDocumento) throws SQLException{
+        Connection dbConnection = null;
+        PreparedStatement preparedStatement = null; 
+        String updateTableSQL = "SELECT * FROM horario WHERE nroDocumento = ? and DAY(ingreso) = DAY(CURDATE())";
+        Horario hor = null;
+        try {            
+            dbConnection = Conn.getConnection();            
+            preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+            preparedStatement.setInt(1, nroDocumento);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                hor = new Horario();
+                hor.setIdHorario(rs.getInt("idHorario"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        }
+        return hor;
     }
 }

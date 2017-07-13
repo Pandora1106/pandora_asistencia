@@ -13,7 +13,7 @@ import java.util.List;
 //import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.SelectEvent;
@@ -21,6 +21,7 @@ import org.primefaces.event.UnselectEvent;
 import pandora.asistencia.dao.EmpleadoDao;
 import pandora.asistencia.entity.Empleado;
 import pandora.asistencia.entity.Parametro;
+import pandora.asistencia.util.Constantes;
 
 /**
  *
@@ -28,10 +29,10 @@ import pandora.asistencia.entity.Parametro;
  */
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class EmpleadoMb implements Serializable {
 
-    private int nroDocumento;
+    private Integer nroDocumento;
     private String nombres;
     private String apePaterno;
     private String apeMaterno;
@@ -56,11 +57,12 @@ public class EmpleadoMb implements Serializable {
     private int radioValue;
     private List<Parametro> listaTipoDoc;
     private List<Parametro> listaEstado;
-    private static final String DATO1 = "tipo documento";
-    private static final String DATO2 = "estado";
+    private Empleado tempEmp;
+    private Integer buscarByNro;
 
     public EmpleadoMb() {
         empleado = new Empleado();
+        tempEmp = new Empleado();
         listaEmpleados = new ArrayList();
         dao = new EmpleadoDao(Empleado.class);
     }
@@ -81,7 +83,7 @@ public class EmpleadoMb implements Serializable {
         Empleado emp = dao.validar(nroDocumento, password);
         if (emp != null) {
             nombreCompleto = dao.getNombre(nroDocumento);
-//            nroDocumento = emp.getNroDocumento();
+            nroDocumento = emp.getNroDocumento();
             return "principal";
         } else {
             return "index";
@@ -95,14 +97,16 @@ public class EmpleadoMb implements Serializable {
     }
 
     public void radioValueChanged() throws SQLException {
+        setVisible(true);
         switch (radioValue) {
-            case 0:
+            case 0://buscar por número de documento (dni/pasaporte)
                 listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByNroDocumento(radioValue);
-            case 1://nombres
+                tempEmp = dao.find(buscarByNro);
+                listaEmpleados.add(tempEmp);
+            case 1://buscar por nombres
                 listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByNameJDBC(DATO1);
-            case 2://estado
+                listaEmpleados = dao.findByNameJDBC(Constantes.TIPODOC);
+            case 2://buscar por estado
                 listaEmpleados = new ArrayList();
                 listaEmpleados = dao.findByStatus(radioValue);
             default:
@@ -111,11 +115,11 @@ public class EmpleadoMb implements Serializable {
         }
     }
 
-    public int getNroDocumento() {
+    public Integer getNroDocumento() {
         return nroDocumento;
     }
 
-    public void setNroDocumento(int nroDocumento) {
+    public void setNroDocumento(Integer nroDocumento) {
         this.nroDocumento = nroDocumento;
     }
 
@@ -231,8 +235,7 @@ public class EmpleadoMb implements Serializable {
         this.empleado = empleado;
     }
 
-    public List<Empleado> getListaEmpleados() {
-        setVisible(true);
+    public List<Empleado> getListaEmpleados() {        
         listaEmpleados = new ArrayList();
         listaEmpleados = dao.findAll();
         return listaEmpleados;
@@ -276,7 +279,7 @@ public class EmpleadoMb implements Serializable {
 
     public List<Parametro> getListaTipoDoc() throws SQLException {
         listaTipoDoc = new ArrayList();
-        listaTipoDoc = dao.getListaDatoJDBC(DATO1);
+        listaTipoDoc = dao.getListaDatoJDBC(Constantes.TIPODOC);
         return listaTipoDoc;
     }
 
@@ -286,7 +289,7 @@ public class EmpleadoMb implements Serializable {
 
     public List<Parametro> getListaEstado() throws SQLException {
         listaEstado = new ArrayList();
-        listaEstado = dao.getListaDatoJDBC(DATO2);
+        listaEstado = dao.getListaDatoJDBC(Constantes.ESTADO);
         return listaEstado;
     }
 
@@ -297,10 +300,6 @@ public class EmpleadoMb implements Serializable {
     public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Empleado Selecionado", ((Empleado) event.getObject()).getNombres());
         FacesContext.getCurrentInstance().addMessage(null, msg);
-//        ConfigurableNavigationHandler configurableNavigationHandler =
-//    			(ConfigurableNavigationHandler)FacesContext.
-//    			  getCurrentInstance().getApplication().getNavigationHandler();    	
-//    	  configurableNavigationHandler.performNavigation("datosEmpleado?faces-redirect=true");
     }
 
     public void onRowUnselect(UnselectEvent event) {
@@ -320,4 +319,16 @@ public class EmpleadoMb implements Serializable {
         return "datosEmpleado?faces-redirect=true&pageId=" + nroDocumento;
     }
 
+    public Integer getBuscarByNro() {
+        return buscarByNro;
+    }
+
+    public void setBuscarByNro(Integer buscarByNro) {
+        this.buscarByNro = buscarByNro;
+    }
+    
+    public void clearValues(){
+        setBuscarByNro(null);
+    }
+    
 }

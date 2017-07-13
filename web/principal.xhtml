@@ -15,9 +15,9 @@
             <p:layout fullPage="true">
                 <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
                     <h:form>
-                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2>
+                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2> <p:clock pattern="dd/MM/yyyy HH:mm:ss"/>                        
                         <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>
-                        <p:commandButton style="float: right;" value="Horarios" icon="ui-icon-check" action="horarioEmpleado" />
+                        <p:commandButton style="float: right;" value="Actividades" icon="ui-icon-check" action="horarioEmpleado" />
                     </h:form>
                 </p:layoutUnit>
                 <p:layoutUnit position="south" size="130" closable="true" collapsible="true">
@@ -35,35 +35,35 @@
                     <h:form id="form">
                         <p:outputPanel id="customPanel" style="margin-bottom:10px">
                             <p:selectOneRadio value="#{empleadoMb.radioValue}" id="customRadio" layout="custom"  required="true" >
-                                <f:selectItem itemLabel="Número de Documento" itemValue="0" />
+                                <f:selectItem itemLabel="Número de Documento: " itemValue="0" />
                                 <f:selectItem itemLabel="Nombre(s)" itemValue="1" />
                                 <f:selectItem itemLabel="Estado" itemValue="2" />
                                 <p:ajax listener="#{empleadoMb.radioValueChanged()}" update="selectMenu" />
                             </p:selectOneRadio>
                             <h:panelGrid columns="3" cellpadding="5">
-                                <p:radioButton id="txtNroDocumento" for="customRadio" itemIndex="0" />
-                                <h:outputLabel for="txtNroDocumento" value="Número de Documento" />
-                                <p:inputText />
+                                <p:radioButton id ="txtNroDocumento" for="customRadio" itemIndex="0" />
+                                <h:outputLabel for="txtNroDocumento" value="Número de Documento: " />
+                                <p:inputText id = "txtBuscarByNro" value = "#{empleadoMb.buscarByNro}"/>
                                 <p:radioButton id="txtNombre" for="customRadio" itemIndex="1" />
-                                <h:outputLabel for="txtNombre" value="Nombre(s)" />
+                                <h:outputLabel for="txtNombre" value="Nombre(s): " />
                                 <p:inputText />
                                 <p:radioButton id="txtEstado" for="customRadio" itemIndex="2" />
-                                <h:outputLabel for="txtEstado" value="Estado" />
+                                <h:outputLabel for="txtEstado" value="Estado: " />
                                 <h:selectOneMenu id="selectMenu" >
-                                    <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                    <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                     <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </p:outputPanel>
                         <p:commandButton value="Buscar" icon="ui-icon-search" action="#{empleadoMb.getListaEmpleados}" update="table-wrapper"/>
-                        <p:commandButton value="Limpiar" icon="ui-icon-trash" />
+                        <p:commandButton value="Limpiar" icon="ui-icon-trash" action="#{empleadoMb.clearValues}"/>
                         <br/>
                         <br/>
                         <h:panelGroup id="table-wrapper">
                             <p:growl id="msgs" showDetail="true" />
-                            <p:dataTable id="tabla" var="emp" value="#{empleadoMb.listaEmpleados}" rows="15" rowsPerPageTemplate="20,25" 
+                            <p:dataTable id="tabla" var="emp" value="#{empleadoMb.listaEmpleados}" rows="15" rowsPerPageTemplate="20,25"
                                          selectionMode="single" selection="#{empleadoMb.empleado}" rowKey="#{emp.nroDocumento}" paginator="true" 
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >   
                                 <p:ajax event="rowSelect" listener="#{empleadoMb.onRowSelect}" />
                                 <f:facet name="header">
                                     Seleccionar Empleado
@@ -87,11 +87,28 @@
                                     <h:outputText value="#{emp.estado}" />
                                 </p:column>
                                 <f:facet name="footer">
-                                    <p:commandButton icon="ui-icon-search" value="Ver" action="datosEmpleado">
-                                        <f:param name="id" value="#{emp.nroDocumento}" />
-                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-search" value="Ver" update=":form:empDetail" oncomplete="PF('empDialog').show()" />                                    
                                 </f:facet>
                             </p:dataTable>
+                            <p:dialog header="Informacion del Empleado" widgetVar="empDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+                                <p:outputPanel id="empDetail" style="text-align:center;" >
+                                    <p:panelGrid  columns="2" rendered="#{not empty empleadoMb.empleado}" columnClasses="label,value">
+                                        <f:facet name="header">
+                                            Empleado:                                            
+                                        </f:facet>
+                                        <h:outputText value="N° Documento" />
+                                        <h:outputText value="#{empleadoMb.empleado.nroDocumento}" />
+                                        <h:outputText value="Nombre(s)" />
+                                        <h:outputText value="#{empleadoMb.empleado.nombres}" />
+                                        <h:outputText value="Apellido Paterno" />
+                                        <h:outputText value="#{empleadoMb.empleado.apePaterno}" />
+                                        <h:outputText value="Apellido Materno" />
+                                        <h:outputText value="#{empleadoMb.empleado.apeMaterno}" />
+                                        <h:outputText value="Password" />
+                                        <h:outputText value="#{empleadoMb.empleado.password}" />                                           
+                                    </p:panelGrid>                                    
+                                </p:outputPanel>                                
+                            </p:dialog>
                         </h:panelGroup>
                     </h:form>
                 </p:layoutUnit>

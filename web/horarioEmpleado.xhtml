@@ -16,12 +16,17 @@ and open the template in the editor.
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Pandora®</title>
             </f:facet>
+            <f:metadata>
+                <f:viewParam name="nroDocumento" value="#{viewBean.valor}"/>
+            </f:metadata>
         </h:head>
         <h:body>
             <p:layout fullPage="true">
                 <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
                     <h:form>
-                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2>
+                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}">
+                                <f:param name="nroDocumento" value="#{empleadoMb.nroDocumento}"/>
+                            </h:outputText></h2> <p:clock pattern="dd/MM/yyyy HH:mm:ss"/>
                         <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>
                         <p:commandButton style="float: right;" value="Main" icon="ui-icon-check" action="principal" />
                     </h:form>
@@ -31,65 +36,75 @@ and open the template in the editor.
                 </p:layoutUnit>
                 <p:layoutUnit position="center">
                     Marcar Fecha y Hora de Ingreso / Actividades
-                    <h:form>
+                    <h:form id="Actividad">
                         <h:panelGrid columns="2" cellpadding="5">
-                            <h:outputLabel for="txtNroDocumento" value="N° Documento" style="font-weight:bold"/>
-                            <p:inputText id="txtNroDocumento" value="#{horarioMb.nroDocumento}" />
+                            <h:outputLabel for="txtNroDocumento" value="N° Documento: " style="font-weight:bold"/>
+                            <h:outputText id="txtNroDocumento" value="#{horarioMb.nroDocumento}" style="font-weight:bold"/>                                                        
                         </h:panelGrid>
                         <div align="center" draggable="false">
-                            <p:commandButton value="Registrar Ingreso" action="#{horarioMb.grabar()}" icon="ui-icon-check"/>
+                            <p:commandButton value="Registrar Ingreso" action="#{horarioMb.grabar()}" icon="ui-icon-check" disabled="#{horarioMb.validar()}"/>
                             <p:commandButton value="Registrar Salida" action="#{horarioMb.actualizar()}" icon="ui-icon-check"/>
                             <br/>
                         </div>
                         <h3>Control de Actividades:</h3>
                         <br/>
-
-                        <p:panel id="actividad" header="Actividad" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelAc" style="margin-bottom:20px" collapsed="true">
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputLabel for="txtEmpresaAc" value="Empresa: " style="font-weight:bold"/>
-                                <p:inputText id="txtEmpresaAc" value="#{controlMb.control.empresa}" />
-                                <h:outputLabel for="txtProyectoAc" value="Proyecto: " style="font-weight:bold"/>
-                                <p:inputText id="txtProyectoAc" value="#{controlMb.control.proyecto}" />
-                                <h:outputLabel for="txtHorasAc" value="Horas: " style="font-weight:bold"/>
-                                <p:inputText id="txtHorasAc" value="#{controlMb.control.horas}" />
-                                <b>Actividad: </b>
-                                <h:selectOneMenu value="#{controlMb.control.control}">
-                                    <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                        <p:panel id="actividad" header="Actividad" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelAc" style="margin-bottom:20px" collapsed="true" >
+                            <p:messages id="msgs" />
+                            <h:panelGrid columns="3" cellpadding="5">
+                                <h:outputLabel for="Empresa" value="Empresa: " style="font-weight:bold"/>
+                                <p:inputText id="Empresa" value="#{controlMb.control.empresa}" required="true"/>      
+                                <p:message for="Empresa" display="icon" />
+                                <h:outputLabel for="Proyecto" value="Proyecto: " style="font-weight:bold"/>
+                                <p:inputText id="Proyecto" value="#{controlMb.control.proyecto}" required="true"/>
+                                <p:message for="Proyecto" display="icon" />
+                                <h:outputLabel for="Horas" value="Horas: " style="font-weight:bold"/>
+                                <p:inputText id="Horas" value="#{controlMb.control.horas}" required="true"/>
+                                <p:message for="Horas" display="icon" />
+                                <h:outputLabel for="Control" value="Actividad: " style="font-weight:bold"/>                                
+                                <h:selectOneMenu id="Control" value="#{controlMb.control.control}" required="true" >
+                                    <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                     <f:selectItems value="#{controlMb.listaActividad}" var="con" itemValue="#{con.idParametro}" itemLabel="#{con.dato}"/>
                                 </h:selectOneMenu>
-                                <b>Detalle: </b>
-                                <p:inputTextarea rows="5" cols="31" counter="displayAc" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}"/>
-                                <br/>
-                                <h:outputText id="displayAc" />
+                                <p:message for="Control" display="icon" />
+                                <h:outputLabel for="Detalle" value="Detalle: " style="font-weight:bold"/> 
+                                <p:inputTextarea id="Detalle" rows="5" cols="31" counter="displayAc" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}" required="true"/>                                
+                                <p:message for="Detalle" display="icon" />
+                                <h:outputText id="displayAc" />                                
                             </h:panelGrid>
                             <div align="center" draggable="false">
-                                <p:commandButton value="Registrar Actividad" action="#{controlMb.grabar()}" icon="ui-icon-check"/>
+                                <p:commandButton value="Registrar Actividad" actionListener="#{controlMb.grabar()}" icon="ui-icon-check" update="actividad"/>
+                                <p:commandButton value="Limpiar" update="Actividad" process="@this" actionListener="#{controlMb.clear()}" icon="ui-icon-trash"/>
                             </div>
                         </p:panel>
-
-                        <p:panel id="problema" header="Problema" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelPr" style="margin-bottom:20px" collapsed="true">
+                    </h:form>
+                    <h:form id="Problema">
+                        <p:panel id="problema" header="Incidencia" toggleable="true" closable="false" toggleSpeed="500" closeSpeed="500" widgetVar="panelPr" style="margin-bottom:20px" collapsed="true">
                             <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputLabel for="txtEmpresaPr" value="Empresa: " style="font-weight:bold"/>
-                                <p:inputText id="txtEmpresaPr" value="#{controlMb.control.empresa}" />
-                                <h:outputLabel for="txtProyectoPr" value="Proyecto: " style="font-weight:bold"/>
-                                <p:inputText id="txtProyectoPr" value="#{controlMb.control.proyecto}" />
-                                <h:outputLabel for="txtHorasPr" value="Horas: " style="font-weight:bold"/>
-                                <p:inputText id="txtHorasPr" value="#{controlMb.control.horas}" />
-                                <b>Problema: </b>
-                                <h:selectOneMenu value="#{controlMb.control.control}">
-                                    <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <h:outputLabel for="Empresa" value="Empresa: " style="font-weight:bold"/>
+                                <p:inputText id="Empresa" value="#{controlMb.control.empresa}" />
+                                <p:message for="Empresa" display="icon" />
+                                <h:outputLabel for="Proyecto" value="Proyecto: " style="font-weight:bold"/>
+                                <p:inputText id="Proyecto" value="#{controlMb.control.proyecto}" />
+                                <p:message for="Proyecto" display="icon" />
+                                <h:outputLabel for="Horas" value="Horas: " style="font-weight:bold"/>
+                                <p:inputText id="Horas" value="#{controlMb.control.horas}" />
+                                <p:message for="Horas" display="icon" />
+                                <h:outputLabel for="Control" value="Incidente: " style="font-weight:bold"/>  
+                                <h:selectOneMenu id="Control" value="#{controlMb.control.control}">
+                                    <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                     <f:selectItems value="#{controlMb.listaProblema}" var="con" itemValue="#{con.idParametro}" itemLabel="#{con.dato}"/>
                                 </h:selectOneMenu>
-                                <b>Detalle: </b>
-                                <p:inputTextarea rows="5" cols="31" counter="displayPr" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}"/>
-                                <br/>
+                                <p:message for="Control" display="icon" />
+                                <h:outputLabel for="Detalle" value="Detalle: " style="font-weight:bold"/>  
+                                <p:inputTextarea id="Detalle" rows="5" cols="31" counter="displayPr" maxlength="200" counterTemplate="Queda(n) {0} caracter(es)." autoResize="false" value="#{controlMb.control.detalle}"/>                                
+                                <p:message for="Detalle" display="icon" />                                
                                 <h:outputText id="displayPr" />
                             </h:panelGrid>
                             <div align="center" draggable="false">
-                                <p:commandButton value="Registrar Actividad" action="#{controlMb.grabar()}" icon="ui-icon-check" binding=""/>
+                                <p:commandButton value="Registrar Incidencia" action="#{controlMb.grabar()}" icon="ui-icon-check"/>
+                                <p:commandButton value="Limpiar" update="Problema" process="@this" actionListener="#{controlMb.clear()}" icon="ui-icon-trash"/>
                             </div>
                         </p:panel>
-
                     </h:form>
                 </p:layoutUnit>
             </p:layout>

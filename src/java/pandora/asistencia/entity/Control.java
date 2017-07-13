@@ -50,7 +50,7 @@ public class Control implements Serializable {
     private String proyecto;
     @Basic(optional = false)
     @Column(name = "horas")
-    private int horas;
+    private Integer horas;
     @Basic(optional = false)
     @Column(name = "control")
     private int control;
@@ -68,7 +68,7 @@ public class Control implements Serializable {
         this.idControl = idControl;
     }
 
-    public Control(Integer idControl, String empresa, String proyecto, int horas, int control, String detalle) {
+    public Control(Integer idControl, String empresa, String proyecto, Integer horas, int control, String detalle) {
         this.idControl = idControl;
         this.empresa = empresa;
         this.proyecto = proyecto;
@@ -101,11 +101,11 @@ public class Control implements Serializable {
         this.proyecto = proyecto;
     }
 
-    public int getHoras() {
+    public Integer getHoras() {
         return horas;
     }
 
-    public void setHoras(int horas) {
+    public void setHoras(Integer horas) {
         this.horas = horas;
     }
 

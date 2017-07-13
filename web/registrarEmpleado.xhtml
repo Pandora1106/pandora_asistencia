@@ -21,9 +21,9 @@ and open the template in the editor.
             <p:layout fullPage="true">
                 <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
                     <h:form>
-                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2>
+                        <h2><h:outputText value="#{empleadoMb.nombreCompleto}"/></h2> <p:clock pattern="dd/MM/yyyy HH:mm:ss"/>
                         <h:commandLink value="Salir" action="#{empleadoMb.doSalir}"/>   
-                        <p:commandButton style="float: right;" value="Registrar Salida" icon="ui-icon-check" action="horarioEmpleado" />
+                        <p:commandButton style="float: right;" value="Actividades" icon="ui-icon-check" action="horarioEmpleado" />
                     </h:form>
                 </p:layoutUnit>                
                 <p:layoutUnit position="south" size="130" closable="true" collapsible="true">
@@ -38,7 +38,7 @@ and open the template in the editor.
                         <h:panelGrid columns="4" cellpadding="10">
                             <b>Tipo Documento:</b>
                             <h:selectOneMenu value="#{empleadoMb.empleado.tipoDocumento}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                 <f:selectItems value="#{empleadoMb.listaTipoDoc}" var="td" itemValue="#{td.idParametro}" itemLabel="#{td.dato}"/>                                
                             </h:selectOneMenu>
                             <h:outputLabel for="txtNroDocumento" value="N° Documento:" style="font-weight:bold" />
@@ -53,7 +53,7 @@ and open the template in the editor.
                             <p:inputText id="txtPassword" value="#{empleadoMb.empleado.password}" />
                             <b>Estado:</b>
                             <h:selectOneMenu value="#{empleadoMb.empleado.estado}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="-1"/>
+                                <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                 <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>                                
                             </h:selectOneMenu>
                             <h:outputLabel for="txtFecIniContrato" value="Fecha Inicio de Contrato:" style="font-weight:bold" />

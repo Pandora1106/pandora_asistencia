@@ -6,9 +6,10 @@
 
     <h:head>
         <title>Pandora®</title>
+        <h:outputStylesheet library="css" name="index.css"/>
     </h:head>
-    <h:body>
-        <div align="center" draggable="false">
+    <h:body id="main">
+        <div id="login">
             <h:form>
                 <h:panelGrid columns="2" cellpadding="5">
                     <h:outputLabel for="txtUsuario" value="Usuario:" style="font-weight:bold" />
@@ -16,10 +17,12 @@
                     <h:outputLabel for="txtPassword" value="Password:" style="font-weight:bold" />
                     <p:password id="txtPassword" value="#{empleadoMb.password}" />
                 </h:panelGrid>
-                <p:commandButton value="Ingresar" action="#{empleadoMb.validar}"  icon="ui-icon-check" />
+                <p:commandButton value="Ingresar" action="#{empleadoMb.validar}"  icon="ui-icon-key" />
             </h:form>
+            <br />       
+            <p:separator/>
             <br />
-            <h:outputLink value="http://pandora-technologies.com.pe">¡Pandora Website!</h:outputLink>
+            <h:outputLink value="http://pandora-technologies.com.pe">¡Pandora Website!</h:outputLink>            
         </div>
     </h:body>
 </html>

@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
@@ -29,13 +30,13 @@ import pandora.asistencia.entity.Horario;
 
 @ManagedBean
 @RequestScoped
-
 public class HorarioMb implements Serializable {
 
-    private int nroDocumento;
     private Horario horario;
     private HorarioDao dao;
     private List<Horario> listaHorario;
+    
+    private boolean status;
 
     public HorarioMb() {
         horario = new Horario();
@@ -78,14 +79,17 @@ public class HorarioMb implements Serializable {
         }
     }
 
-    public int getNroDocumento() {
-        return nroDocumento;
-    }
+    @ManagedProperty(value="#{empleadoMb.nroDocumento}")
+    private Integer nroDocumento;
 
-    public void setNroDocumento(int nroDocumento) {
+    public void setNroDocumento(Integer nroDocumento) {        
         this.nroDocumento = nroDocumento;
     }
 
+    public Integer getNroDocumento(){
+        return nroDocumento;
+    }
+    
     public Horario getHorario() {
         return horario;
     }
@@ -113,9 +117,22 @@ public class HorarioMb implements Serializable {
             Date time = new Date(returnTime);
             return time;
         } catch (Exception e) {
-            
+            System.out.println(e);
         }
         return null;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {        
+        this.status = status;
+    }
+    
+    public boolean validar() throws SQLException{
+        Horario hor = dao.validateJDBC(nroDocumento);
+        return hor!= null;
     }
     
 }
