@@ -31,7 +31,7 @@ public class Conn {
             password = properties.getString("PASSWORD");
             Class.forName(driver);
         } catch (Exception e) {
-
+            System.out.println(e);
         }
     }
 

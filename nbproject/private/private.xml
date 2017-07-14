@@ -5,14 +5,13 @@
         <group>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/EmpleadoMb.java</file>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/principal.xhtml</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/ViewEmpleado.java</file>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/EntityCrud.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/entity/Horario.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/util/Conn.java</file>
             <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/dao/EmpleadoDao.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/registrarEmpleado.xhtml</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/datosEmpleado.xhtml</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/controller/ControlMb.java</file>
-            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/service/EmpleadoService.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/dao/ControlDao.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/util/Test.java</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/web/index.xhtml</file>
+            <file>file:/C:/Users/Ricardo/Documents/GitHub/pandora_asistencia/src/java/pandora/asistencia/util/pandoraAsistencia.properties</file>
         </group>
     </open-files>
 </project-private>

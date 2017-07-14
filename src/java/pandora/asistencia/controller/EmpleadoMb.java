@@ -40,7 +40,6 @@ public class EmpleadoMb implements Serializable {
     private int cbValue;
     private List<Parametro> listaTipoDoc;
     private List<Parametro> listaEstado;
-    private Empleado tempEmp;
     private Integer buscarByNro;
     private Empleado empleado;
     private EmpleadoDao dao;
@@ -48,7 +47,6 @@ public class EmpleadoMb implements Serializable {
 
     public EmpleadoMb() {
         empleado = new Empleado();
-        tempEmp = new Empleado();
         listaEmpleados = new ArrayList();
         dao = new EmpleadoDao(Empleado.class);
     }
@@ -80,26 +78,7 @@ public class EmpleadoMb implements Serializable {
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         req.getSession(true).invalidate();
         return "index";
-    }
-
-    public void radioValueChanged() throws SQLException {        
-        switch (radioValue) {
-            case 0://buscar por número de documento (dni/pasaporte)
-                listaEmpleados = new ArrayList();
-                tempEmp = dao.find(buscarByNro);
-                listaEmpleados.add(tempEmp);
-            case 1://buscar por nombres
-                listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByNameJDBC(buscarByNombre);
-            case 2://buscar por estado
-                listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findByStatus(cbValue);
-                //esto no va
-            default:
-                listaEmpleados = new ArrayList();
-                listaEmpleados = dao.findAll();
-        }
-    }
+    }   
 
     public Integer getNroDocumento() {
         return nroDocumento;
@@ -126,9 +105,14 @@ public class EmpleadoMb implements Serializable {
     }
 
     public List<Empleado> getListaEmpleados() throws SQLException {     
-        //cambiar
-        setVisible(true);
+        setVisible(true);        
         return listaEmpleados;
+    }
+    
+    //testing by now
+    public void radioValueChanged() throws SQLException {        
+        listaEmpleados = new ArrayList();
+        listaEmpleados = dao.searchEmployee(empleado);
     }
 
     public void setListaEmpleados(List<Empleado> listaEmpleados) {
@@ -198,6 +182,7 @@ public class EmpleadoMb implements Serializable {
     }
 
     public void setBuscarByNro(Integer buscarByNro) {
+        System.out.println(buscarByNro);
         this.buscarByNro = buscarByNro;
     }
     

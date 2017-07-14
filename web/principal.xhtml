@@ -11,7 +11,7 @@
                 <title>Pandora®</title>
             </f:facet>
         </h:head>
-        <h:body>            
+        <h:body>      
             <p:layout fullPage="true">
                 <p:layoutUnit position="north" size="145" resizable="true" closable="true" collapsible="true">
                     <h:form>
@@ -38,23 +38,24 @@
                                 <f:selectItem itemLabel="Número de Documento: " itemValue="0"/>
                                 <f:selectItem itemLabel="Nombre(s)" itemValue="1"/>
                                 <f:selectItem itemLabel="Estado" itemValue="2"/>
+                                <p:ajax listener="#{empleadoMb.radioValueChanged()}"/>
                             </p:selectOneRadio>
                             <h:panelGrid columns="3" cellpadding="5">
                                 <p:radioButton for="customRadio" itemIndex="0" />
                                 <h:outputLabel for="txtBuscarByNro" value="Número de Documento: " />
-                                <p:inputText id= "txtBuscarByNro" value="#{empleadoMb.buscarByNro}"/>
+                                <p:inputText id= "txtBuscarByNro" value="#{empleadoMb.empleado.nroDocumento}"/>
                                 <p:radioButton for="customRadio" itemIndex="1" />
                                 <h:outputLabel for="txtNombre" value="Nombre(s): " />
-                                <p:inputText id="txtNombre" value="#{empleadoMb.buscarByNombre}"/>
+                                <p:inputText id="txtNombre" value="#{empleadoMb.empleado.nombres}"/>
                                 <p:radioButton id="txtEstado" for="customRadio" itemIndex="2" />
                                 <h:outputLabel for="txtEstado" value="Estado: " />
-                                <h:selectOneMenu id="selectMenu" value="#{empleadoMb.cbValue}" >
+                                <h:selectOneMenu id="selectMenu" value="#{empleadoMb.empleado.estado}" >
                                     <f:selectItem itemLabel="Seleccionar" itemValue="0"/>
                                     <f:selectItems value="#{empleadoMb.listaEstado}" var="st" itemValue="#{st.idParametro}" itemLabel="#{st.dato}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </p:outputPanel>
-                        <p:commandButton value="Buscar" icon="ui-icon-search" action="#{empleadoMb.getListaEmpleados}" update="table-wrapper"/>
+                        <p:commandButton value="Buscar" icon="ui-icon-search" action="#{empleadoMb.getListaEmpleados}" update="table-wrapper" process="@form"/>
                         <p:commandButton value="Limpiar" icon="ui-icon-trash" action="#{empleadoMb.clearValues}"/>
                         <br/>
                         <br/>

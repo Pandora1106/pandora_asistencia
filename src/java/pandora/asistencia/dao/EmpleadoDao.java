@@ -73,6 +73,44 @@ public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService
         }
     }
     
+    public List<Empleado> searchEmployee(Empleado empleado) throws SQLException{
+        Connection dbConnection = null;
+        PreparedStatement preparedStatement = null;
+        List<Empleado> listaEmpleados = null;
+        String selectTableSQL = "SELECT * FROM empleado WHERE nombres LIKE '?%' OR nroDocumento = ? OR estado = ?";
+        try {
+            listaEmpleados = new ArrayList();
+            dbConnection = Conn.getConnection();
+            preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+            preparedStatement.setString(1, empleado.getNombres());
+            preparedStatement.setInt(2, empleado.getNroDocumento());
+            preparedStatement.setInt(3, empleado.getEstado());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Empleado emp = new Empleado();
+                empleado.setNroDocumento(rs.getInt("nroDocumento"));
+                empleado.setNombres(rs.getString("nombres"));
+                empleado.setApePaterno(rs.getString("apePaterno"));
+                empleado.setApeMaterno(rs.getString("apeMaterno"));
+                empleado.setPassword(rs.getString("password"));
+                empleado.setEstado(rs.getInt("estado"));
+                empleado.setTipoDocumento(rs.getInt("tipoDocumento"));
+                listaEmpleados.add(empleado);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        }
+        return listaEmpleados;
+    }
+    
+    //Useless by now    
     public List<Empleado> findByNameJDBC(String nombre) throws SQLException {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
