@@ -76,16 +76,30 @@ public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService
     public List<Empleado> searchEmployee(Empleado empleado) throws SQLException{
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
-        List<Empleado> listaEmpleados = null;
-        String selectTableSQL = "SELECT * FROM empleado WHERE nombres LIKE '?%' OR nroDocumento = ? OR estado = ?";
+        
+        Statement	stmt	            =	null;
+        List<Empleado> listaEmpleados   =   null;
+        StringBuilder 	query	=	new StringBuilder();
+        query.append(" SELECT * FROM empleado WHERE 1 = 1 ");
+         if(empleado.getNombres() != null)
+            query.append(" AND nombres LIKE "+"'"+empleado.getNombres()+"%"+"'");
+         if(empleado.getDatasourceType() != null)
+            query.append(" AND nroDocumento = "+empleado.getDatasourceType()+" ");
+         if(empleado.getDatasourceType() != null)
+            query.append(" AND estado = "+empleado.getDatasourceType()+" ");
+        
+        
         try {
             listaEmpleados = new ArrayList();
             dbConnection = Conn.getConnection();
+            stmt         = Conn.createStatement();
+            
             preparedStatement = dbConnection.prepareStatement(selectTableSQL);
             preparedStatement.setString(1, empleado.getNombres());
             preparedStatement.setInt(2, empleado.getNroDocumento());
             preparedStatement.setInt(3, empleado.getEstado());
-            ResultSet rs = preparedStatement.executeQuery();
+            
+            ResultSet rs = stmt.executeQuery(query.toString());
             while (rs.next()) {
                 Empleado emp = new Empleado();
                 empleado.setNroDocumento(rs.getInt("nroDocumento"));
