@@ -55,7 +55,7 @@
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </p:outputPanel>
-                        <p:commandButton value="Buscar" icon="ui-icon-search" action="#{empleadoMb.getListaEmpleados}" update="table-wrapper" process="@form"/>
+                        <p:commandButton value="Buscar" icon="ui-icon-search" action="#{empleadoMb.searchEmpleado}" update="table-wrapper" process="@form"/>
                         <p:commandButton value="Limpiar" icon="ui-icon-trash" action="#{empleadoMb.clearValues}"/>
                         <br/>
                         <br/>
