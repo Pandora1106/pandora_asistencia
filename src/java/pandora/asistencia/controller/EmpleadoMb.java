@@ -103,9 +103,15 @@ public class EmpleadoMb implements Serializable {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
-
-    public List<Empleado> getListaEmpleados() throws SQLException {     
-        setVisible(true);        
+    
+    public List<Empleado> searchEmpleado(){
+        try{
+            listaEmpleados = dao.searchEmployee(empleado);
+        }catch(Exception e){
+            e.printStackTrace();
+        }    
+    }
+    public List<Empleado> getListaEmpleados(){     
         return listaEmpleados;
     }
     
