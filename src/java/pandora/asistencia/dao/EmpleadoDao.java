@@ -83,10 +83,10 @@ public class EmpleadoDao extends EntityCrud<Empleado> implements EmpleadoService
         query.append(" SELECT * FROM empleado WHERE 1 = 1 ");
          if(empleado.getNombres() != null)
             query.append(" AND nombres LIKE "+"'"+empleado.getNombres()+"%"+"'");
-         if(empleado.getDatasourceType() != null)
-            query.append(" AND nroDocumento = "+empleado.getDatasourceType()+" ");
-         if(empleado.getDatasourceType() != null)
-            query.append(" AND estado = "+empleado.getDatasourceType()+" ");
+         if(empleado.getNroDocumento() != null)
+            query.append(" AND nroDocumento = "+empleado.getNroDocumento()+" ");
+         if(empleado.getEstado() != null)
+            query.append(" AND estado = "+empleado.getEstado()+" ");
         
         
         try {
